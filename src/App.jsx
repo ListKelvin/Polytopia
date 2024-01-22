@@ -1,9 +1,9 @@
-import EllipSecurve from "./pages/EllipSecurve";
+import RouterComponent from "./router";
 
 export default function App() {
   return (
     <div className="App">
-      <EllipSecurve />
+      <RouterComponent />
     </div>
   );
 }
