@@ -2,8 +2,10 @@
 import { BakeShadows, OrbitControls, Stage } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { ModelTrain } from "../Mod/ModelTrain";
+import { Model } from "../Mod/HumanIllustrate";
 
 function Train() {
+  // <ModelTrain />
   return (
     <Canvas shadows camera={{ position: [0, 0, 150], fov: 40 }}>
       <Stage environment="city" intensity={0.6}>

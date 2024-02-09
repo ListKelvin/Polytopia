@@ -7,7 +7,7 @@ const user = {
   name: "Minh Phạm",
   email: "phamm5687@gmail.com",
   imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    "https://scontent.fsgn15-1.fna.fbcdn.net/v/t39.30808-6/423695096_1837533156707302_6558831907018014339_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeERrlWpf3BRqqmGw92DMjngzxKVqtwquyrPEpWq3Cq7Kpg6DVjx2IF1GJdKFSF4xTcBC9LuWQSuDqUpQwDN7jnV&_nc_ohc=Fv9p9zAbBnMAX-ZDv8x&_nc_ht=scontent.fsgn15-1.fna&oh=00_AfC8018j4B9PS2UbcpfWmDhURcsafgWQK91Y7u78av4Czw&oe=65CAF91E",
 };
 const navigation = [
   { name: "Home", href: "/", current: false },
@@ -80,7 +80,7 @@ export default function NavBar() {
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">Open user menu</span>
                           <img
-                            className="h-8 w-8 rounded-full"
+                            className="h-8 w-8 rounded-full object-cover"
                             src={user.imageUrl}
                             alt=""
                           />
