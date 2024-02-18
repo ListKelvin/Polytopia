@@ -1,5 +1,5 @@
 function Home() {
-  return <div>This is Home pagedsds</div>;
+  return <div>Hello from the other side bro commit has deployed !!!</div>;
 }
 
 export default Home;
