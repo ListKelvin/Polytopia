@@ -3,8 +3,9 @@ import EllipSecurve from "../pages/EllipSecurve";
 import Home from "../pages/Home";
 
 import NavBar from "../components/NavBar";
-import { ModelTrain } from "../Mod/ModelTrain";
+
 import Train from "../pages/Train";
+import Human from "../pages/Human";
 const RouterComponent = () => {
   const router = createBrowserRouter([
     {
@@ -24,6 +25,11 @@ const RouterComponent = () => {
         {
           path: "train",
           element: <Train />,
+          errorElement: <div>error warning</div>,
+        },
+        {
+          path: "human",
+          element: <Human />,
           errorElement: <div>error warning</div>,
         },
       ],
