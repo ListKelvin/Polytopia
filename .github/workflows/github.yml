@@ -24,10 +24,18 @@ jobs:
 
       # // deploy the application to netlify
       - name: Deploy production to Netlify
-        uses: South-Paw/action-netlify-deploy@v1.2.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
-          build-dir: "./build"
-          comment-on-commit: true
+        # uses: South-Paw/action-netlify-deploy@v1.2.0
+        # with:
+        #   github-token: ${{ secrets.GITHUB_TOKEN }}
+        #   netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        #   netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
+        #   build-dir: "./build"
+        #   comment-on-commit: true
+
+          script:
+            - echo "REACT_APP_BASE_URL=https://culturenet-apis.netlify.app/.netlify/functions/api" >> ".env"
+            - npm install --legacy-peer-deps
+            - npm install netlify-cli -g
+            - npm run build
+            # - netlify link --id af6ba939-984a-4e41-ae5f-71f43598b714
+            - netlify deploy --dir "dist" --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }} --prod
