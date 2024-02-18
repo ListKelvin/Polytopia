@@ -24,7 +24,7 @@ jobs:
 
       # // deploy the application to netlify
       - name: Deploy production to Netlify
-        uses: list-kelvin/action-netlify-deploy@v0.0.1
+        uses: ListKelvin/ThreeJs-MockProject
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
