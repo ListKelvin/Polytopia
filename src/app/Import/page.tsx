@@ -1,7 +1,7 @@
 "use client";
 import { useCallback } from "react";
 import dynamic from "next/dynamic";
-import suzanne from "../../../public/model/suzanne.gltf";
+// import suzanne from "/public/model/suzanne.gltf";
 
 import FileDrop from "@/components/fileDrop";
 import arrayBufferToString from "@/utils/arrayBufferToString";
@@ -9,10 +9,10 @@ import useStore from "@/store/store";
 
 const Loading = () => <p className="text-4xl font-bold">Loading ...</p>;
 
-const Result = dynamic(() => import("@/components/result"), {
-  ssr: false,
-  loading: Loading,
-});
+// const Result = dynamic(() => import("@/components/result"), {
+//   ssr: false,
+//   loading: Loading,
+// });
 
 export default function Home() {
   const { buffer } = useStore((state) => ({
@@ -37,15 +37,15 @@ export default function Home() {
     });
   }, []);
 
-  const useSuzanne = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    useStore.setState({
-      buffer: suzanne,
-      fileName: "suzanne.gltf",
-      textOriginalFile: suzanne,
-    });
-  };
+  // const useSuzanne = (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   useStore.setState({
+  //     buffer: "test",
+  //     fileName: "suzanne.gltf",
+  //     textOriginalFile: "suzanne",
+  //   });
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -53,11 +53,7 @@ export default function Home() {
         className="flex flex-col items-center justify-center flex-1"
         style={{ height: "calc(100vh - 56px)" }}
       >
-        {buffer ? (
-          <Result />
-        ) : (
-          <FileDrop onDrop={onDrop} useSuzanne={useSuzanne} />
-        )}
+        {buffer ? <div>receive</div> : <FileDrop onDrop={onDrop} />}
       </main>
     </div>
   );

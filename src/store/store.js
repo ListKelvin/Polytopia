@@ -56,7 +56,7 @@ const useStore = create((set, get) => ({
     );
 
     const code = parse(result, { ...config, fileName, printwidth: 100 });
-
+    console.log("line 59: ", code);
     try {
       const prettierConfig = config.types
         ? { parser: "typescript", plugins: [parserTS] }
