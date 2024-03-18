@@ -7,7 +7,7 @@ import { isGlb } from "../utils/isExtension";
 import useSandbox from "../utils/useSandbox";
 import Viewer from "./viewer";
 import Code from "./code";
-import useStore from "@/utils/store";
+// import useStore from ";
 
 const Result = () => {
   const {

@@ -50,13 +50,14 @@ const useStore = create((set, get) => ({
     saveAs(blob, `${fileName.split(".")[0]}.zip`);
   },
   generateScene: async (config) => {
-    const { fileName, buffer } = get();
+    const { fileName } = get();
+    console.log(config);
     const result = await new Promise((resolve, reject) =>
-      gltfLoader.parse(buffer, "", resolve, reject)
+      gltfLoader.parse(config.buffer, "/public/model/", resolve, reject)
     );
 
     const code = parse(result, { ...config, fileName, printwidth: 100 });
-    console.log("line 59: ", code);
+    console.log("line 59: ", result);
     try {
       const prettierConfig = config.types
         ? { parser: "typescript", plugins: [parserTS] }
