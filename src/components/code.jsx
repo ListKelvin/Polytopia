@@ -1,10 +1,10 @@
 // import theme from 'prism-react-renderer/themes/nightOwlLight'
 "use client";
-import { Highlight, defaultProps } from "prism-react-renderer";
+import { Highlight, themes } from "prism-react-renderer";
 
 const Code = ({ children }) => {
   return (
-    <Highlight {...defaultProps} code={children} language="jsx">
+    <Highlight theme={themes.dracula} code={children} language="jsx">
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre
           className={`${className} whitespace-pre-wrap col-span-3 p-16 overflow-auto bg-white h-full`}

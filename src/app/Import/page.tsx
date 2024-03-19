@@ -1,95 +1,61 @@
 "use client";
+
 import { useCallback } from "react";
+
+import JSZip from "jszip";
+import { encode as arrayBufferToBase64 } from "base64-arraybuffer";
 import dynamic from "next/dynamic";
-// import suzanne from "/public/model/suzanne.gltf";
 
 import FileDrop from "@/components/fileDrop";
-import arrayBufferToString from "@/utils/arrayBufferToString";
+
 import useStore from "@/store/store";
-import Code from "@/components/code";
+import { isGlb, isGltf, isZip } from "@/utils/isExtension";
+import loadFileAsArrayBuffer from "@/utils/loadFileAsArrayBuffer";
+
 const Loading = () => <p className="text-4xl font-bold">Loading ...</p>;
 
-// const Result = dynamic(() => import("@/components/result"), {
-//   ssr: false,
-//   loading: Loading,
-// });
+const Result = dynamic(() => import("@/components/result"), {
+  ssr: false,
+  loading: Loading,
+});
 
 export default function Home() {
-  const { buffer } = useStore((state) => ({
-    buffer: state.buffer,
-  }));
-  const {
-    fileName,
-    code,
+  const buffers = useStore((state) => state.buffers);
 
-    generateScene,
-  } = useStore();
+  const onDrop = useCallback(async (acceptedFiles) => {
+    const buffers = new Map();
 
-  console.log("store: ", buffer);
-  const CreateCode = async (buffer) => {
-    await generateScene({
-      types: { value: false, hint: "Add Typescript definitions" },
-      shadows: { value: true, hint: "Let meshes cast and receive shadows" },
-      instance: { value: false, hint: " Instance re-occuring geometry" },
-      instanceall: {
-        label: "instance all",
-        value: false,
-        hint: "Instance all geometries (for cheaper re-use)",
-      },
-      verbose: {
-        value: false,
-        hint: "Verbose output w/ names and empty groups",
-      },
-      keepnames: {
-        value: false,
-        label: "keep names",
-        hint: "Keep original names",
-      },
-      keepgroups: {
-        value: false,
-        label: "keep groups",
-        hint: "Keep (empty) groups",
-      },
-      meta: { value: false, hint: "Include metadata (as userData)" },
-      precision: {
-        value: 3,
-        min: 1,
-        max: 8,
-        step: 1,
-        hint: "Number of fractional digits (default: 2)",
-      },
-      buffer: buffer,
-    });
-  };
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
-      console.log("file", file);
+    // load all files as arrayBuffer in the buffers map
+    await Promise.all(
+      acceptedFiles.map((file) =>
+        loadFileAsArrayBuffer(file).then((buffer) =>
+          buffers.set(file.path.replace(/^\//, ""), buffer)
+        )
+      )
+    );
 
-      const reader = new FileReader();
-      reader.onabort = () => console.error("file reading was aborted");
-      reader.onerror = () => console.error("file reading has failed");
-      reader.onload = async () => {
-        const data = reader.result;
+    // unzip files
+    for (const [path, buffer] of buffers.entries()) {
+      if (isZip(path)) {
+        const { files } = await JSZip.loadAsync(buffer);
+        for (const [path, file] of Object.entries(files)) {
+          const buffer = await file.async("arraybuffer");
+          buffers.set(path, buffer);
+        }
+        buffers.delete(path);
+      }
+    }
 
-        useStore.setState({ buffer: data, fileName: file.name });
-        arrayBufferToString(data, (a) =>
-          useStore.setState({ textOriginalFile: a })
-        );
-        CreateCode(data);
-      };
-      reader.readAsArrayBuffer(file);
+    const filePath = Array.from(buffers.keys()).find(
+      (path) => isGlb(path) || isGltf(path)
+    );
+
+    useStore.setState({
+      buffers,
+      fileName: filePath,
+      textOriginalFile: btoa(arrayBufferToBase64(buffers.get(filePath))),
     });
   }, []);
-
-  // const useSuzanne = (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   useStore.setState({
-  //     buffer: "test",
-  //     fileName: "suzanne.gltf",
-  //     textOriginalFile: "suzanne",
-  //   });
-  // };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -97,8 +63,7 @@ export default function Home() {
         className="flex flex-col items-center justify-center flex-1"
         style={{ height: "calc(100vh - 56px)" }}
       >
-        {buffer ? <div>receive</div> : <FileDrop onDrop={onDrop} />}
-        {code && <Code>{code}</Code>}
+        {buffers ? <Result /> : <FileDrop onDrop={onDrop} />}
       </main>
     </div>
   );
