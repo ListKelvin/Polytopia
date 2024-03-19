@@ -3,6 +3,8 @@
 import { Highlight, themes } from "prism-react-renderer";
 
 const Code = ({ children }) => {
+  console.log(children);
+
   return (
     <Highlight theme={themes.dracula} code={children} language="jsx">
       {({ className, style, tokens, getLineProps, getTokenProps }) => (

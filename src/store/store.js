@@ -2,7 +2,8 @@ import { saveAs } from "file-saver";
 import { create } from "zustand";
 import * as THREE from "three";
 import { createZip } from "../utils/createZip";
-import { parse } from "gltfjsx";
+import { parse } from "gltfjsx/src/utils/exports";
+
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
@@ -70,7 +71,7 @@ const useStore = create((set, get) => ({
       );
     }
     const code = await parse(result, { ...config, fileName, printwidth: 100 });
-
+    console.log(code);
     set({
       code,
       animations: !!result.animations.length,
